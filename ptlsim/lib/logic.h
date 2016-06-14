@@ -386,6 +386,14 @@ struct FullyAssociativeTags {
     evictmap[way] = 1;
     // Performance is somewhat better with this off with higher associativity caches:
     // if (evictmap.allset()) evictmap = 0;
+    
+    //Support for odd number of ways
+    //The hack just makes sure that the offline ways are never referenced by lru()
+    int tmp = 1 << (log2(ways << 1));
+	
+    for(int i = (tmp - 1); i >= ways ; i--){
+	evictmap[i] = 1;
+    }
   }
 
   //
